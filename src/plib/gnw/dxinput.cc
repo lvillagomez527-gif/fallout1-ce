@@ -103,7 +103,8 @@ bool dxinput_read_keyboard_buffer(KeyboardData* keyboardData)
 // 0x4E070C
 bool dxinput_mouse_init()
 {
-    return SDL_SetRelativeMouseMode(SDL_TRUE) == 0;
+    SDL_ShowCursor(SDL_DISABLE);
+    return SDL_SetRelativeMouseMode(SDL_FALSE) == 0;
 }
 
 // 0x4E078C

@@ -497,9 +497,40 @@ void mouse_info()
         y = 0;
     }
 
-    // Adjust for mouse senstivity.
-    x = (int)(x * mouse_sensitivity);
-    y = (int)(y * mouse_sensitivity);
+    // In windowed, non-relative mode, align Fallout's cursor to the OS cursor.
+    // Preserve relative mouse input for the original fullscreen/relative mode.
+    if (gSdlWindow != NULL && gSdlRenderer != NULL && !SDL_GetRelativeMouseMode()) {
+        int windowX = 0;
+        int windowY = 0;
+        SDL_GetMouseState(&windowX, &windowY);
+
+        int windowWidth = 0;
+        int windowHeight = 0;
+        SDL_GetWindowSize(gSdlWindow, &windowWidth, &windowHeight);
+
+        if (SDL_GetMouseFocus() == gSdlWindow
+            && windowX >= 0 && windowY >= 0
+            && windowX < windowWidth && windowY < windowHeight) {
+            float logicalX = 0.0f;
+            float logicalY = 0.0f;
+            SDL_RenderWindowToLogical(gSdlRenderer, windowX, windowY, &logicalX, &logicalY);
+
+            int falloutX = 0;
+            int falloutY = 0;
+            mouse_get_position(&falloutX, &falloutY);
+            x = static_cast<int>(logicalX) - falloutX;
+            y = static_cast<int>(logicalY) - falloutY;
+        } else {
+            // Ignore desktop movement and clicks while outside the game.
+            x = 0;
+            y = 0;
+            buttons = 0;
+        }
+    } else {
+        // Relative mode retains the original sensitivity behavior.
+        x = static_cast<int>(x * mouse_sensitivity);
+        y = static_cast<int>(y * mouse_sensitivity);
+    }
 
     if (vcr_state == VCR_STATE_PLAYING) {
         if (((vcr_terminate_flags & VCR_TERMINATE_ON_MOUSE_PRESS) != 0 && buttons != 0)

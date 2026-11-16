@@ -2302,21 +2302,38 @@ static int gmouse_check_scrolling(int x, int y, int cursor)
         return -1;
     }
 
+    // Only scroll while the pointer is inside Fallout's SDL window.
+    // This matters when the desktop pointer is no longer confined to it.
+    if (SDL_GetMouseFocus() == nullptr) {
+        return -1;
+    }
+
+    // Only trigger map scrolling when the pointer is over the map window.
+    // Other windows (including the bottom interface bar) own their mouse input.
+    if (win_get_top_win(x, y) != display_win) {
+        return -1;
+    }
+
+    // The bottom interface occupies the final 100 logical screen pixels.
+    // Start south scrolling just above it, not over its buttons.
+    constexpr int kEdgeScrollMargin = 24;
+    constexpr int kInterfaceHeight = 100;
+    const int mapBottom = scr_size.lry - kInterfaceHeight;
     int flags = 0;
 
-    if (x <= scr_size.ulx) {
+    if (x <= scr_size.ulx + kEdgeScrollMargin) {
         flags |= SCROLLABLE_W;
     }
 
-    if (x >= scr_size.lrx) {
+    if (x >= scr_size.lrx - kEdgeScrollMargin) {
         flags |= SCROLLABLE_E;
     }
 
-    if (y <= scr_size.uly) {
+    if (y <= scr_size.uly + kEdgeScrollMargin) {
         flags |= SCROLLABLE_N;
     }
 
-    if (y >= scr_size.lry) {
+    if (y >= mapBottom - kEdgeScrollMargin && y <= mapBottom) {
         flags |= SCROLLABLE_S;
     }
 
