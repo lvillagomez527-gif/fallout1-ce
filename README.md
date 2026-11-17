@@ -1,3 +1,52 @@
+# Fallout Community Edition — Linux Enhanced
+
+An unofficial Linux Mint enhancement of [Fallout Community Edition](https://github.com/alexbatalov/fallout1-ce), based on the original project's v1.1.0 release.
+
+This fork focuses on improving mouse behavior, map scrolling, and usability on modern Linux desktops while preserving the original Fallout experience.
+
+## What's Different?
+
+- **Unrestricted mouse movement:** Allows the mouse to leave the Fallout window without being captured.
+- **Improved cursor synchronization:** Keeps mouse input aligned with the in-game cursor.
+- **Context-sensitive map scrolling:** Expands scrolling zones while preventing unintended scrolling over interface elements.
+- **Windowed and fullscreen support:** Tested successfully in both modes.
+- **Native Linux compatibility:** Runs without Wine or Proton.
+
+## Tested Hardware
+
+| Computer | Operating System | Display Mode |
+|---|---|---|
+| Dell OptiPlex 3050 | Linux Mint 22.3 Cinnamon (X11) | Windowed |
+| Dell Inspiron 15-3567 | Linux Mint 22.3 Cinnamon (X11) | Fullscreen |
+
+Both computers successfully launched the modified engine, played cinematics, and saved and loaded games.
+
+## Current Development Status
+
+**Experimental — v0.1.0**
+
+The source code is available on the `linux-enhancements-v0.1.0` branch.
+
+A Debian (`.deb`) installer is planned but has not yet been released.
+
+Users must provide their own legally obtained Fallout game files. No original game assets or personal save files are included in this repository.
+
+## Known Limitations
+
+- Mouse behavior and scrolling margins are currently hardcoded.
+- Compatibility outside Linux Mint 22.3 on x86-64 hardware has not been verified.
+- The installer and user-configurable mouse settings are still under development.
+
+## Credits
+
+Based on [Fallout Community Edition by alexbatalov](https://github.com/alexbatalov/fallout1-ce).
+
+The original engine and its contributors deserve full credit for the underlying reimplementation. This fork adds Linux-focused modifications.
+
+Please refer to the original project's license and copyright notices for redistribution terms.
+
+---
+
 # Fallout Community Edition
 
 Fallout Community Edition is a fully working re-implementation of Fallout, with the same original gameplay, engine bugfixes, and some quality of life improvements, that works (mostly) hassle-free on multiple platforms.
